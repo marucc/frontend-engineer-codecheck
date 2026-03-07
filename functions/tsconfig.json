@@ -8,7 +8,8 @@
     "noUnusedLocals": true,
     "sourceMap": true,
     "strict": true,
-    "noEmit": true
+    "noEmit": true,
+    "types": ["vite/client", "vitest/globals"]
   },
-  "include": ["src"]
+  "include": ["src", "*.ts"]
 }

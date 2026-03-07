@@ -5,21 +5,23 @@
     "build:watch": "vite build --watch",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "tsc --noEmit && eslint src/ && prettier --check \"src/**/*.ts\"",
-    "lint:fix": "eslint src --fix && prettier --write \"src/**/*.ts\""
+    "lint": "tsc --noEmit && eslint . && prettier --check \"**/*.ts\"",
+    "lint:fix": "eslint . --fix && prettier --write \"**/*.ts\""
   },
   "engines": {
     "node": "22"
   },
   "main": "dist/index.js",
   "dependencies": {
+    "express": "^4.22.1",
     "firebase-admin": "^13.7.0",
     "firebase-functions": "^7.1.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.0.0",
+    "@eslint/js": "^9.39.4",
+    "@types/express": "^5.0.6",
     "@types/node": "^22.19.15",
-    "eslint": "^9.0.0",
+    "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
     "firebase-functions-test": "^3.4.1",
     "jiti": "^2.6.1",

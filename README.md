@@ -26,7 +26,7 @@ https://github.com/yumemi-inc/frontend-engineer-codecheck
 - `docker compose up`
 - http://localhost:5000 にアクセス
 
-### ローカル実行の場合　
+### ローカル実行の場合
 
 - `corepack enable` # pnpm インストール
 - `pnpm install --frozen-lockfile`
@@ -35,7 +35,7 @@ https://github.com/yumemi-inc/frontend-engineer-codecheck
 
 ## 開発に利用するコマンド
 
-- `pnpm install --frozen-lockfile` # パッケージインストール（lockfile通りに）
+- `pnpm install --frozen-lockfile` パッケージインストール（lockfile通りに）
 - `pnpm install` パッケージ追加・更新時（lockfile更新あり）
 - `pnpm build` functions, hosting をbuild
 - `pnpm build:watch` build watch
@@ -47,3 +47,13 @@ https://github.com/yumemi-inc/frontend-engineer-codecheck
 
 - `functions` Firebase Functions（API）
 - `hosting` React SPA
+
+
+## Functions
+
+Functions URLと、外部APIとの関係
+
+ | エンドポイント | 外部API |
+ |---|---|
+ | `/api/v1/prefectures` | `/api/v1/prefectures` |
+ | `/api/v1/population/:prefCode` | `/api/v1/population/composition/perYear?prefCode=${prefCode}` |
