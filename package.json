@@ -10,6 +10,7 @@
   "scripts": {
     "start": "firebase emulators:start --only functions,hosting",
     "start:functions": "firebase emulators:start --only functions",
+    "build": "pnpm --filter '@fec/*' run build",
     "build:watch": "pnpm --filter '@fec/*' run build:watch",
     "lint": "pnpm --filter '@fec/*' run lint",
     "lint:fix": "pnpm --filter '@fec/*' run lint:fix",
