@@ -1,0 +1,32 @@
+services:
+  firebase-local:
+    container_name: fec-local
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - fec_node_modules_root:/app/node_modules
+      - fec_node_modules_functions:/app/functions/node_modules
+      - fec_node_modules_hosting:/app/hosting/node_modules
+    command:
+      - /bin/bash
+      - -lc
+      - |
+        cd /app
+        pnpm install --frozen-lockfile
+        pnpm build:watch &
+        pnpm start
+    ports:
+      - "${PORT:-5000}:5000"
+    environment:
+      NODE_ENV: development
+      ENV_MODE: emulator
+      GCLOUD_PROJECT: demo-fec
+volumes:
+  fec_node_modules_root:
+    name: fec-local-root_node_modules
+  fec_node_modules_functions:
+    name: fec-local-functions_node_modules
+  fec_node_modules_hosting:
+    name: fec-local-hosting_node_modules

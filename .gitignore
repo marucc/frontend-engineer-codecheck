@@ -3,6 +3,15 @@
 ._*
 
 # Node
+.pnpm-store
 node_modules/
 npm-debug.log
 dist/
+
+# Firebase
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# env
+*.local

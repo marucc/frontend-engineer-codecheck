@@ -1,17 +1,27 @@
 {
-  "name": "frontend-engineer-codecheck",
+  "name": "fec",
   "version": "0.0.1",
+  "description": "",
   "private": true,
   "packageManager": "pnpm@10.30.3",
   "engines": {
     "node": "22"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "firebase emulators:start --only functions,hosting",
+    "start:functions": "firebase emulators:start --only functions",
+    "build:watch": "pnpm --filter '@fec/*' run build:watch",
+    "lint": "pnpm --filter '@fec/*' run lint",
+    "lint:fix": "pnpm --filter '@fec/*' run lint:fix",
+    "test": "pnpm --filter '@fec/*' run test"
   },
   "devDependencies": {
-    "firebase-tools": "^15.9.0"
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+    "eslint-config-prettier": "^10.1.8",
+    "firebase-tools": "^15.9.0",
+    "prettier": "^3.8.1"
   },
-  "author": "maru_cc",
+  "keywords": [],
+  "author": "",
   "license": "ISC"
 }
