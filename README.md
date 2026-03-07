@@ -6,6 +6,10 @@
 
 https://github.com/yumemi-inc/frontend-engineer-codecheck
 
+## 実行環境
+
+https://frontend-engineer-codecheck.web.app/
+
 ## 技術スタック
 
 - React 19 / TypeScript
@@ -63,3 +67,17 @@ Functions URLと、外部APIとの関係
  |---|---|
  | `/api/v1/prefectures` | `/api/v1/prefectures` |
  | `/api/v1/population/:prefCode` | `/api/v1/population/composition/perYear?prefCode=${prefCode}` |
+
+## デプロイ
+
+- main ブランチへのマージ時に GitHub Actions で自動デプロイ
+
+### 初回セットアップ
+
+- `cp infra/terraform.tfvars.example infra/terraform.tfvars` して値を設定
+- `terraform -chdir=infra init && terraform -chdir=infra apply`
+- API キーを登録
+  - `echo -n "api key" | gcloud secrets versions add API_KEY --data-file=- --project=frontend-engineer-codecheck`
+- GitHub Secrets に WIF 認証情報を設定
+  - `gh secret set WIF_PROVIDER --body "$(terraform -chdir=infra output -raw wif_provider)"`
+  - `gh secret set WIF_SERVICE_ACCOUNT --body "$(terraform -chdir=infra output -raw github_actions_service_account_email)"`
