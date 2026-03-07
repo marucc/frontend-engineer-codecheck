@@ -9,6 +9,7 @@ npm-debug.log
 dist/
 
 # Firebase
+.firebase/
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
