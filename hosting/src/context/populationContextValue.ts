@@ -11,4 +11,6 @@ export interface PopulationContextValue {
   setPopulationType: (type: PopulationType) => void
 }
 
-export const PopulationContext = createContext<PopulationContextValue | null>(null)
+export const PopulationContext = createContext<PopulationContextValue | null>(
+  null
+)
