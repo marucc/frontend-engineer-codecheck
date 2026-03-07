@@ -130,6 +130,12 @@ resource "google_project_iam_member" "github_actions_service_usage_consumer" {
   member  = "serviceAccount:${google_service_account.github_actions.email}"
 }
 
+resource "google_project_iam_member" "github_actions_secret_viewer" {
+  project = var.project_id
+  role    = "roles/secretmanager.viewer"
+  member  = "serviceAccount:${google_service_account.github_actions.email}"
+}
+
 # Workload Identity Federation
 resource "google_iam_workload_identity_pool" "github" {
   project                   = var.project_id
