@@ -1,4 +1,4 @@
-import { usePopulationContext } from '../../context/PopulationContext'
+import { usePopulationContext } from '../../hooks/usePopulationContext'
 import type { PopulationType } from '../../types'
 import styles from './PopulationTypeSelector.module.css'
 

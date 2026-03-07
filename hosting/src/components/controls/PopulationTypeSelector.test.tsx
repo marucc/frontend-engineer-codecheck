@@ -1,11 +1,11 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { usePopulationContext } from '../../context/PopulationContext'
+import { usePopulationContext } from '../../hooks/usePopulationContext'
 import { PopulationTypeSelector } from './PopulationTypeSelector'
 
 const mockSetPopulationType = vi.fn()
 
-vi.mock('../../context/PopulationContext', () => ({
+vi.mock('../../hooks/usePopulationContext', () => ({
   usePopulationContext: vi.fn(),
 }))
 

@@ -10,7 +10,7 @@ vi.mock('../../hooks/usePrefectures', () => ({
   usePrefectures: vi.fn(),
 }))
 
-vi.mock('../../context/PopulationContext', () => ({
+vi.mock('../../hooks/usePopulationContext', () => ({
   usePopulationContext: () => ({
     addPrefecture: mockAddPrefecture,
     removePrefecture: mockRemovePrefecture,

@@ -2,7 +2,7 @@ import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useEffect, useMemo, useRef } from 'react'
 
-import { usePopulationContext } from '../../context/PopulationContext'
+import { usePopulationContext } from '../../hooks/usePopulationContext'
 import styles from './Chart.module.css'
 
 export const Chart = () => {

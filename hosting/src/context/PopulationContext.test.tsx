@@ -1,7 +1,8 @@
 import { act, renderHook } from '@testing-library/react'
 import type { ReactNode } from 'react'
 
-import { PopulationProvider, usePopulationContext } from './PopulationContext'
+import { PopulationProvider } from './PopulationContext'
+import { usePopulationContext } from '../hooks/usePopulationContext'
 
 vi.mock('../api/client', () => ({
   fetchPopulation: vi
