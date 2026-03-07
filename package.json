@@ -1,0 +1,17 @@
+{
+  "name": "frontend-engineer-codecheck",
+  "version": "0.0.1",
+  "private": true,
+  "packageManager": "pnpm@10.30.3",
+  "engines": {
+    "node": "22"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "firebase-tools": "^15.9.0"
+  },
+  "author": "maru_cc",
+  "license": "ISC"
+}
