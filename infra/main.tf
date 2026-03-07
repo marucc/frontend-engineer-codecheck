@@ -29,6 +29,8 @@ provider "google-beta" {
 resource "google_firebase_project" "default" {
   provider = google-beta
   project  = var.project_id
+
+  depends_on = [google_project_service.apis["firebase.googleapis.com"]]
 }
 
 # Firebase Hosting サイト
@@ -37,7 +39,10 @@ resource "google_firebase_hosting_site" "default" {
   project  = var.project_id
   site_id  = var.project_id
 
-  depends_on = [google_firebase_project.default]
+  depends_on = [
+    google_firebase_project.default,
+    google_project_service.apis["firebasehosting.googleapis.com"],
+  ]
 }
 
 # Cloud Functions 用のサービスアカウント
@@ -45,13 +50,6 @@ resource "google_service_account" "functions" {
   account_id   = "cloud-functions-sa"
   display_name = "Cloud Functions Service Account"
   project      = var.project_id
-}
-
-# Functions SA に必要なロール
-resource "google_project_iam_member" "functions_invoker" {
-  project = var.project_id
-  role    = "roles/cloudfunctions.invoker"
-  member  = "serviceAccount:${google_service_account.functions.email}"
 }
 
 # Secret Manager で API キーを管理
@@ -96,15 +94,27 @@ resource "google_service_account" "github_actions" {
   project      = var.project_id
 }
 
-resource "google_project_iam_member" "github_actions_firebase_admin" {
+resource "google_project_iam_member" "github_actions_hosting_admin" {
   project = var.project_id
-  role    = "roles/firebase.admin"
+  role    = "roles/firebasehosting.admin"
   member  = "serviceAccount:${google_service_account.github_actions.email}"
 }
 
-resource "google_project_iam_member" "github_actions_cloud_run_admin" {
+resource "google_project_iam_member" "github_actions_cloudfunctions_developer" {
   project = var.project_id
-  role    = "roles/run.admin"
+  role    = "roles/cloudfunctions.developer"
+  member  = "serviceAccount:${google_service_account.github_actions.email}"
+}
+
+resource "google_project_iam_member" "github_actions_run_developer" {
+  project = var.project_id
+  role    = "roles/run.developer"
+  member  = "serviceAccount:${google_service_account.github_actions.email}"
+}
+
+resource "google_project_iam_member" "github_actions_artifactregistry_writer" {
+  project = var.project_id
+  role    = "roles/artifactregistry.writer"
   member  = "serviceAccount:${google_service_account.github_actions.email}"
 }
 
@@ -119,6 +129,11 @@ resource "google_iam_workload_identity_pool" "github" {
   project                   = var.project_id
   workload_identity_pool_id = "github-actions-pool"
   display_name              = "GitHub Actions Pool"
+
+  depends_on = [
+    google_project_service.apis["iam.googleapis.com"],
+    google_project_service.apis["iamcredentials.googleapis.com"],
+  ]
 }
 
 resource "google_iam_workload_identity_pool_provider" "github" {
@@ -133,7 +148,7 @@ resource "google_iam_workload_identity_pool_provider" "github" {
     "attribute.repository" = "assertion.repository"
   }
 
-  attribute_condition = "assertion.repository == '${var.github_repo}'"
+  attribute_condition = "assertion.repository == '${var.github_repo}' && (assertion.ref == 'refs/heads/main' || assertion.ref == 'refs/heads/develop')"
 
   oidc {
     issuer_uri = "https://token.actions.githubusercontent.com"
