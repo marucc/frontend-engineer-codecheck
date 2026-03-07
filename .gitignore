@@ -9,9 +9,17 @@ npm-debug.log
 dist/
 
 # Firebase
+.firebase/
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
 
 # env
 *.local

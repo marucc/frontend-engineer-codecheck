@@ -16,6 +16,10 @@
   ],
   "hosting": {
     "public": "hosting/dist",
+    "predeploy": [
+      "pnpm --filter @fec/hosting run lint",
+      "pnpm --filter @fec/hosting run build"
+    ],
     "rewrites": [
       {
         "source": "/api/**",

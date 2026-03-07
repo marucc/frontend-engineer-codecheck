@@ -1,4 +1,4 @@
-import { usePopulationContext } from '../../context/PopulationContext'
+import { usePopulationContext } from '../../hooks/usePopulationContext'
 import styles from './Header.module.css'
 
 export const Header = () => {

@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { usePopulationContext } from '../../context/PopulationContext'
+import { usePopulationContext } from '../../hooks/usePopulationContext'
 import { usePrefectures } from '../../hooks/usePrefectures'
 import styles from './PrefectureSelector.module.css'
 

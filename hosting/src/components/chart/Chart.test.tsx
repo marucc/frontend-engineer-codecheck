@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { usePopulationContext } from '../../context/PopulationContext'
+import { usePopulationContext } from '../../hooks/usePopulationContext'
 import { Chart } from './Chart'
 
 vi.mock('highcharts', () => ({ default: {} }))
@@ -10,7 +10,7 @@ vi.mock('highcharts-react-official', () => ({
   ),
 }))
 
-vi.mock('../../context/PopulationContext', () => ({
+vi.mock('../../hooks/usePopulationContext', () => ({
   usePopulationContext: vi.fn(),
 }))
 
