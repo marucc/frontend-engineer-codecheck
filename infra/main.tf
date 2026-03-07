@@ -82,6 +82,7 @@ locals {
     "run.googleapis.com",
     "secretmanager.googleapis.com",
     "artifactregistry.googleapis.com",
+    "cloudbilling.googleapis.com",
     "iam.googleapis.com",
     "iamcredentials.googleapis.com",
   ]
