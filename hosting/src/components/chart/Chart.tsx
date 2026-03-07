@@ -1,0 +1,83 @@
+import Highcharts from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
+import { useEffect, useMemo, useRef } from 'react'
+
+import { usePopulationContext } from '../../context/PopulationContext'
+import styles from './Chart.module.css'
+
+export const Chart = () => {
+  const chartRef = useRef<HighchartsReact.RefObject>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const { populations, populationType } = usePopulationContext()
+
+  useEffect(() => {
+    const wrapper = wrapperRef.current
+    if (!wrapper) return
+
+    const observer = new ResizeObserver(() => {
+      const chart = chartRef.current?.chart
+      if (chart) {
+        chart.setSize(wrapper.clientWidth, wrapper.clientHeight, false)
+      }
+    })
+    observer.observe(wrapper)
+    return () => observer.disconnect()
+  }, [populations])
+
+  const series: Highcharts.SeriesOptionsType[] = useMemo(
+    () =>
+      populations.map((pref) => {
+        const composition = pref.data.find((d) => d.label === populationType)
+        return {
+          type: 'line' as const,
+          name: pref.prefName,
+          data:
+            composition?.data.map((entry) => [entry.year, entry.value]) ?? [],
+        }
+      }),
+    [populations, populationType]
+  )
+
+  const options: Highcharts.Options = useMemo(
+    () => ({
+      chart: { marginTop: 50 },
+      title: { text: undefined },
+      xAxis: { title: { text: '年度' }, type: 'linear' },
+      yAxis: { title: { text: '人口数' } },
+      series,
+      credits: { enabled: false },
+      responsive: {
+        rules: [
+          {
+            condition: { maxWidth: 500 },
+            chartOptions: {
+              legend: { layout: 'horizontal', align: 'center' },
+            },
+          },
+        ],
+      },
+    }),
+    [series]
+  )
+
+  if (populations.length === 0) {
+    return (
+      <div className={styles.container}>
+        <p className={styles.placeholder}>都道府県を選択してください</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className={styles.container}>
+      <div ref={wrapperRef} className={styles.chartWrapper}>
+        <HighchartsReact
+          ref={chartRef}
+          highcharts={Highcharts}
+          options={options}
+          containerProps={{ style: { width: '100%', height: '100%' } }}
+        />
+      </div>
+    </div>
+  )
+}

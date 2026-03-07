@@ -21,6 +21,11 @@
     "firebase-tools": "^15.9.0",
     "prettier": "^3.8.1"
   },
+  "pnpm": {
+    "overrides": {
+      "express": "<5.0.0"
+    }
+  },
   "keywords": [],
   "author": "",
   "license": "ISC"

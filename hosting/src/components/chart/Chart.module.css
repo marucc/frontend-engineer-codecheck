@@ -1,0 +1,31 @@
+.container {
+  position: relative;
+  height: 40vh;
+  min-height: 25rem;
+}
+
+.chartWrapper {
+  position: absolute;
+  inset: 0;
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding-bottom: 3rem;
+  color: var(--color-text-muted);
+}
+
+@media (width >= 768px) {
+  .container {
+    height: 50vh;
+  }
+}
+
+@media (width >= 1024px) {
+  .container {
+    height: 60vh;
+  }
+}

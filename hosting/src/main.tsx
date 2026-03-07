@@ -1,9 +1,12 @@
+import 'modern-normalize'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './main.css'
+
+import { App } from './App'
+import './styles/variables.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <div>test</div>
+    <App />
   </StrictMode>
 )
