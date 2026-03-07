@@ -21,6 +21,9 @@ https://github.com/yumemi-inc/frontend-engineer-codecheck
 
 ## 開発環境構築
 
+- ローカル実行用のシークレットファイルを作成
+  - `cp functions/.secret.local.sample functions/.secret.local` して API_KEY を設定する
+
 ### Docker を使う場合
 
 - `docker compose up`
@@ -35,19 +38,22 @@ https://github.com/yumemi-inc/frontend-engineer-codecheck
 
 ## 開発に利用するコマンド
 
-- `pnpm install --frozen-lockfile` パッケージインストール（lockfile通りに）
-- `pnpm install` パッケージ追加・更新時（lockfile更新あり）
-- `pnpm build` functions, hosting をbuild
-- `pnpm build:watch` build watch
-- `pnpm lint` typecheck + ESLint + Prettier
-- `pnpm lint:fix` ESLint + Prettier 自動修正
-- `pnpm start` Dockerを使わずにエミュレーター起動する場合
+| コマンド | 説明 |
+|---|---|
+| `pnpm install --frozen-lockfile` | パッケージインストール（lockfile通りに） |
+| `pnpm install` | パッケージ追加・更新時（lockfile更新あり） |
+| `pnpm build` | functions, hosting をbuild |
+| `pnpm build:watch` | build watch |
+| `pnpm lint` | typecheck + ESLint + Prettier |
+| `pnpm lint:fix` | ESLint + Prettier 自動修正 |
+| `pnpm start` | Dockerを使わずにエミュレーター起動する場合 |
 
 ## ディレクトリ構成
 
-- `functions` Firebase Functions（API）
-- `hosting` React SPA
-
+  | ディレクトリ | 説明 |
+  |---|---|
+  | `functions/` | Firebase Functions（API） |
+  | `hosting/` | React SPA |
 
 ## Functions
 
