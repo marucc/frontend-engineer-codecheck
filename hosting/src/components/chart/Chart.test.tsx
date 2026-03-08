@@ -14,6 +14,10 @@ vi.mock('../../hooks/usePopulationContext', () => ({
   usePopulationContext: vi.fn(),
 }))
 
+vi.mock('../../utils/seriesStyles', () => ({
+  getSeriesStyle: () => ({ color: '#000', symbol: 'circle' }),
+}))
+
 describe('Chart', () => {
   afterEach(() => {
     vi.restoreAllMocks()
@@ -37,6 +41,7 @@ describe('Chart', () => {
         {
           prefCode: 1,
           prefName: '北海道',
+          styleIndex: 0,
           data: [
             {
               label: '総人口',

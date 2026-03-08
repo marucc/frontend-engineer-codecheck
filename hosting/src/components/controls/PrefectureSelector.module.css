@@ -1,17 +1,22 @@
 .container {
   display: flex;
   flex-direction: column;
+  padding: 0.75rem;
 }
 
 @media (width >= 768px) {
   .container {
     min-height: 10rem;
   }
+
+  .loading {
+    padding-right: var(--sidebar-width);
+  }
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
   gap: 0.5rem;
 }
 
@@ -31,10 +36,102 @@
   color: #dc2626;
 }
 
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
+  clip-path: inset(50%);
+}
+
 .label {
   display: flex;
   gap: 0.25rem;
   align-items: center;
   font-size: 0.875rem;
+  color: var(--color-text-muted);
   cursor: pointer;
+  transition: color 0.15s;
+}
+
+.label:hover {
+  color: var(--color-text);
+}
+
+.label:has(:focus-visible) {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.label.selected {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.legendIcon {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1rem;
+}
+
+.legendLine {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background-color: currentcolor;
+  transform: translateY(-50%);
+}
+
+.marker {
+  position: relative;
+  display: inline-block;
+  width: 0.625rem;
+  height: 0.625rem;
+}
+
+.marker[data-symbol='circle'] {
+  background-color: currentcolor;
+  border-radius: 50%;
+}
+
+.marker[data-symbol='square'] {
+  background-color: currentcolor;
+}
+
+.marker[data-symbol='diamond'] {
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: currentcolor;
+  transform: rotate(45deg);
+}
+
+.marker[data-symbol='triangle'] {
+  width: 0;
+  height: 0;
+  background: none;
+  border-right: 0.35rem solid transparent;
+  border-bottom: 0.625rem solid currentcolor;
+  border-left: 0.35rem solid transparent;
+  transform: translateY(-10%);
+}
+
+.marker[data-symbol='triangle-down'] {
+  width: 0;
+  height: 0;
+  background: none;
+  border-top: 0.625rem solid currentcolor;
+  border-right: 0.35rem solid transparent;
+  border-left: 0.35rem solid transparent;
+  transform: translateY(10%);
 }
