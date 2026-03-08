@@ -52,16 +52,7 @@ export const Chart = () => {
       series,
       legend: { enabled: false },
       credits: { enabled: false },
-      responsive: {
-        rules: [
-          {
-            condition: { maxWidth: 500 },
-            chartOptions: {
-              legend: { layout: 'horizontal', align: 'center' },
-            },
-          },
-        ],
-      },
+      responsive: { rules: [] },
     }),
     [series]
   )

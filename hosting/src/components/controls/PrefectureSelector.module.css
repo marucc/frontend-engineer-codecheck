@@ -62,6 +62,12 @@
   color: var(--color-text);
 }
 
+.label:has(:focus-visible) {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 .label.selected {
   font-weight: 500;
   color: var(--color-text);
