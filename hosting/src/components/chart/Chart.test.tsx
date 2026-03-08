@@ -25,7 +25,6 @@ describe('Chart', () => {
       populationType: '総人口',
       addPrefecture: vi.fn(),
       removePrefecture: vi.fn(),
-      setPopulationType: vi.fn(),
     })
 
     render(<Chart />)
@@ -52,7 +51,6 @@ describe('Chart', () => {
       populationType: '総人口',
       addPrefecture: vi.fn(),
       removePrefecture: vi.fn(),
-      setPopulationType: vi.fn(),
     })
 
     render(<Chart />)

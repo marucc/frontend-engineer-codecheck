@@ -13,7 +13,7 @@ vi.mock('../api/client', () => ({
 }))
 
 const wrapper = ({ children }: { children: ReactNode }) => (
-  <PopulationProvider>{children}</PopulationProvider>
+  <PopulationProvider initialType="総人口">{children}</PopulationProvider>
 )
 
 describe('PopulationContext', () => {
@@ -34,11 +34,13 @@ describe('PopulationContext', () => {
     expect(result.current.populationType).toBe('総人口')
   })
 
-  it('populationType を変更できる', () => {
-    const { result } = renderHook(() => usePopulationContext(), { wrapper })
+  it('initialType で人口種別を指定できる', () => {
+    const youngWrapper = ({ children }: { children: ReactNode }) => (
+      <PopulationProvider initialType="年少人口">{children}</PopulationProvider>
+    )
 
-    act(() => {
-      result.current.setPopulationType('年少人口')
+    const { result } = renderHook(() => usePopulationContext(), {
+      wrapper: youngWrapper,
     })
 
     expect(result.current.populationType).toBe('年少人口')

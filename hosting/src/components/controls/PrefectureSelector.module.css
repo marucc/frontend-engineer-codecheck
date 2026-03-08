@@ -1,12 +1,17 @@
 .container {
   display: flex;
   flex-direction: column;
-  min-height: 18rem;
+}
+
+@media (width >= 768px) {
+  .container {
+    min-height: 10rem;
+  }
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
   gap: 0.5rem;
 }
 
@@ -24,36 +29,6 @@
   align-items: center;
   justify-content: center;
   color: #dc2626;
-}
-
-@media (width >= 640px) {
-  .container {
-    min-height: 15rem;
-  }
-
-  .grid {
-    grid-template-columns: repeat(5, 1fr);
-  }
-}
-
-@media (width >= 768px) {
-  .container {
-    min-height: 9rem;
-  }
-
-  .grid {
-    grid-template-columns: repeat(8, 1fr);
-  }
-}
-
-@media (width >= 1024px) {
-  .container {
-    min-height: 6rem;
-  }
-
-  .grid {
-    grid-template-columns: repeat(12, 1fr);
-  }
 }
 
 .label {

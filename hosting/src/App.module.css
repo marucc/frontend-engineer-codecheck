@@ -1,7 +1,13 @@
 .container {
   display: grid;
   grid-template-rows: auto 1fr auto;
+  min-width: 320px;
   min-height: 100lvh;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: 1fr;
 }
 
 .main {
@@ -9,4 +15,10 @@
   max-width: 1400px;
   padding: 1rem;
   margin: 0 auto;
+}
+
+@media (width >= 768px) {
+  .body {
+    grid-template-columns: var(--sidebar-width) 1fr;
+  }
 }
