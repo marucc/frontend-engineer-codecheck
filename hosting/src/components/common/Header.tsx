@@ -1,21 +1,19 @@
 import styles from './Header.module.css'
 
 interface HeaderProps {
-  menuOpen: boolean
-  onMenuToggle: () => void
+  onMenuOpen: () => void
 }
 
-export const Header = ({ menuOpen, onMenuToggle }: HeaderProps) => {
+export const Header = ({ onMenuOpen }: HeaderProps) => {
   return (
     <header className={styles.header}>
       <button
         type="button"
         className={styles.menuButton}
-        onClick={onMenuToggle}
-        aria-label={menuOpen ? 'メニューを閉じる' : 'メニューを開く'}
-        aria-expanded={menuOpen}
+        onClick={onMenuOpen}
+        aria-label="メニューを開く"
       >
-        {menuOpen ? '\u2715' : '\u2630'}
+        {'\u2630'}
       </button>
       <h1>人口推移グラフ</h1>
       <div className={styles.spacer} aria-hidden="true" />
