@@ -9,6 +9,9 @@ import { Home } from './pages/Home'
 import { NotFound } from './pages/NotFound'
 import { POPULATION_TYPE_SLUGS } from './types'
 
+const slugs = Object.values(POPULATION_TYPE_SLUGS)
+const defaultSlug = slugs[0]
+
 export const App = () => {
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -23,8 +26,11 @@ export const App = () => {
           <Sidebar open={menuOpen} onClose={() => setMenuOpen(false)} />
           <main className={styles.main}>
             <Routes>
-              <Route path="/" element={<Navigate to="/total" replace />} />
-              {Object.values(POPULATION_TYPE_SLUGS).map((slug) => (
+              <Route
+                path="/"
+                element={<Navigate to={`/${defaultSlug}`} replace />}
+              />
+              {slugs.map((slug) => (
                 <Route key={slug} path={`/${slug}`} element={<Home />} />
               ))}
               <Route path="*" element={<NotFound />} />
