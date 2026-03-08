@@ -19,6 +19,6 @@
 
 @media (width >= 768px) {
   .body {
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: var(--sidebar-width) 1fr;
   }
 }

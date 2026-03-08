@@ -25,7 +25,7 @@
   }
 
   .placeholder {
-    padding-right: 200px;
+    padding-right: var(--sidebar-width);
   }
 }
 
