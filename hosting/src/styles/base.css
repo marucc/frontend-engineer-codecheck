@@ -3,6 +3,10 @@ body {
   background-color: var(--color-bg);
 }
 
+body.menu-open {
+  overflow: hidden;
+}
+
 a {
   color: var(--color-text);
   text-decoration: underline;
