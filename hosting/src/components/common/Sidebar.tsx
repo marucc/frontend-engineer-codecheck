@@ -15,9 +15,16 @@ interface SidebarProps {
 
 export const Sidebar = ({ open, onClose }: SidebarProps) => {
   useEffect(() => {
-    document.body.classList.toggle('menu-open', open)
+    if (!open) return
+
+    const scrollY = window.scrollY
+    document.body.style.top = `-${scrollY}px`
+    document.body.classList.add('menu-open')
+
     return () => {
       document.body.classList.remove('menu-open')
+      document.body.style.top = ''
+      window.scrollTo(0, scrollY)
     }
   }, [open])
 
