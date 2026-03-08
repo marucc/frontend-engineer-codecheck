@@ -3,6 +3,7 @@ import HighchartsReact from 'highcharts-react-official'
 import { useEffect, useMemo, useRef } from 'react'
 
 import { usePopulationContext } from '../../hooks/usePopulationContext'
+import { getSeriesStyle } from '../../utils/seriesStyles'
 import styles from './Chart.module.css'
 
 export const Chart = () => {
@@ -28,9 +29,13 @@ export const Chart = () => {
     () =>
       populations.map((pref) => {
         const composition = pref.data.find((d) => d.label === populationType)
+        const { color, symbol } = getSeriesStyle(pref.styleIndex)
         return {
           type: 'line' as const,
+          id: `pref-${pref.prefCode}`,
           name: pref.prefName,
+          color,
+          marker: { symbol, enabled: true, lineWidth: 0 },
           data:
             composition?.data.map((entry) => [entry.year, entry.value]) ?? [],
         }
@@ -40,22 +45,24 @@ export const Chart = () => {
 
   const options: Highcharts.Options = useMemo(
     () => ({
-      chart: { marginTop: 25 },
+      chart: { marginTop: 35, marginBottom: 45 },
       title: { text: undefined },
-      xAxis: { title: { text: '年度' }, type: 'linear' },
-      yAxis: { title: { text: '人口数' } },
-      series,
-      credits: { enabled: false },
-      responsive: {
-        rules: [
-          {
-            condition: { maxWidth: 500 },
-            chartOptions: {
-              legend: { layout: 'horizontal', align: 'center' },
-            },
-          },
-        ],
+      xAxis: { title: { text: '年', align: 'high', y: -20 }, type: 'linear' },
+      yAxis: {
+        title: {
+          text: '人口数',
+          align: 'high',
+          rotation: 0,
+          x: -53,
+          y: -15,
+          offset: 0,
+          textAlign: 'left',
+        },
       },
+      series,
+      legend: { enabled: false },
+      credits: { enabled: false },
+      responsive: { rules: [] },
     }),
     [series]
   )
