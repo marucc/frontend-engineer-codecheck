@@ -44,6 +44,14 @@ describe('Sidebar', () => {
     expect(onClose).toHaveBeenCalledTimes(1)
   })
 
+  it('閉じるボタンをクリックすると onClose が呼ばれる', () => {
+    const { onClose } = renderSidebar()
+
+    fireEvent.click(screen.getByRole('button', { name: 'メニューを閉じる' }))
+
+    expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
   it('オーバーレイをクリックすると onClose が呼ばれる', () => {
     const { onClose } = renderSidebar()
 

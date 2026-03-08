@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 
 import { POPULATION_TYPE_SLUGS } from '../../types'
@@ -13,12 +14,27 @@ interface SidebarProps {
 }
 
 export const Sidebar = ({ open, onClose }: SidebarProps) => {
+  useEffect(() => {
+    document.body.classList.toggle('menu-open', open)
+    return () => {
+      document.body.classList.remove('menu-open')
+    }
+  }, [open])
+
   return (
     <>
       {open && (
         <div className={styles.overlay} onClick={onClose} role="presentation" />
       )}
       <nav className={`${styles.nav} ${open ? styles.open : ''}`}>
+        <button
+          type="button"
+          className={styles.closeButton}
+          onClick={onClose}
+          aria-label="メニューを閉じる"
+        >
+          {'\u2715'}
+        </button>
         <ul className={styles.list}>
           {NAV_ITEMS.map(({ label, to }) => (
             <li key={to}>

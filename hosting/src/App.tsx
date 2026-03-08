@@ -18,10 +18,7 @@ export const App = () => {
   return (
     <BrowserRouter>
       <div className={styles.container}>
-        <Header
-          menuOpen={menuOpen}
-          onMenuToggle={() => setMenuOpen((prev) => !prev)}
-        />
+        <Header onMenuOpen={() => setMenuOpen(true)} />
         <div className={styles.body}>
           <Sidebar open={menuOpen} onClose={() => setMenuOpen(false)} />
           <main className={styles.main}>
