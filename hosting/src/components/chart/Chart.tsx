@@ -45,10 +45,20 @@ export const Chart = () => {
 
   const options: Highcharts.Options = useMemo(
     () => ({
-      chart: { marginTop: 25, marginBottom: 45 },
+      chart: { marginTop: 35, marginBottom: 45 },
       title: { text: undefined },
-      xAxis: { title: { text: '年', align: 'high', y: -19 }, type: 'linear' },
-      yAxis: { title: { text: '人口数' } },
+      xAxis: { title: { text: '年', align: 'high', y: -20 }, type: 'linear' },
+      yAxis: {
+        title: {
+          text: '人口数',
+          align: 'high',
+          rotation: 0,
+          x: -53,
+          y: -15,
+          offset: 0,
+          textAlign: 'left',
+        },
+      },
       series,
       legend: { enabled: false },
       credits: { enabled: false },
