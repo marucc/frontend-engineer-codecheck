@@ -4,6 +4,7 @@ import { Chart } from '../components/chart/Chart'
 import { ControlPanel } from '../components/controls/ControlPanel'
 import { PopulationProvider } from '../context/PopulationContext'
 import { type PopulationTypeSlug, SLUG_TO_POPULATION_TYPE } from '../types'
+import styles from './Home.module.css'
 
 export const Home = () => {
   const slug = useLocation().pathname.slice(1) as PopulationTypeSlug
@@ -11,8 +12,10 @@ export const Home = () => {
 
   return (
     <PopulationProvider initialType={populationType}>
-      <ControlPanel />
-      <Chart />
+      <div className={styles.container}>
+        <ControlPanel />
+        <Chart />
+      </div>
     </PopulationProvider>
   )
 }

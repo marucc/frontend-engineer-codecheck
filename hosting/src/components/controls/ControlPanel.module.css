@@ -1,4 +1,5 @@
 .sectionTitle {
-  margin: 0.75rem 0;
+  padding: 1.5rem 0.75rem 0.5rem;
+  margin: 0;
   font-size: clamp(0.875rem, 4vw, 1.5rem);
 }
