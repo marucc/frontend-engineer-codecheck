@@ -11,7 +11,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
   gap: 0.5rem;
 }
 
@@ -37,4 +37,67 @@
   align-items: center;
   font-size: 0.875rem;
   cursor: pointer;
+}
+
+.legendIcon {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1rem;
+}
+
+.legendLine {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background-color: currentcolor;
+  transform: translateY(-50%);
+}
+
+.marker {
+  position: relative;
+  display: inline-block;
+  width: 0.625rem;
+  height: 0.625rem;
+}
+
+.marker[data-symbol='circle'] {
+  background-color: currentcolor;
+  border-radius: 50%;
+}
+
+.marker[data-symbol='square'] {
+  background-color: currentcolor;
+}
+
+.marker[data-symbol='diamond'] {
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: currentcolor;
+  transform: rotate(45deg);
+}
+
+.marker[data-symbol='triangle'] {
+  width: 0;
+  height: 0;
+  background: none;
+  border-right: 0.35rem solid transparent;
+  border-bottom: 0.625rem solid currentcolor;
+  border-left: 0.35rem solid transparent;
+  transform: translateY(-10%);
+}
+
+.marker[data-symbol='triangle-down'] {
+  width: 0;
+  height: 0;
+  background: none;
+  border-top: 0.625rem solid currentcolor;
+  border-right: 0.35rem solid transparent;
+  border-left: 0.35rem solid transparent;
+  transform: translateY(10%);
 }

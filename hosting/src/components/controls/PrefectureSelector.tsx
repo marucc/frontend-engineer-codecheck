@@ -1,27 +1,35 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { usePopulationContext } from '../../hooks/usePopulationContext'
 import { usePrefectures } from '../../hooks/usePrefectures'
+import { getSeriesStyle } from '../../utils/seriesStyles'
 import styles from './PrefectureSelector.module.css'
 
 export const PrefectureSelector = () => {
-  const { addPrefecture, removePrefecture } = usePopulationContext()
+  const { populations, addPrefecture, removePrefecture } =
+    usePopulationContext()
   const { prefectures, loading, error } = usePrefectures()
   const [selectedCodes, setSelectedCodes] = useState<Set<number>>(new Set())
 
+  const styleIndexMap = useMemo(() => {
+    const map = new Map<number, number>()
+    populations.forEach((p) => map.set(p.prefCode, p.styleIndex))
+    return map
+  }, [populations])
+
   const handleChange = useCallback(
     (prefCode: number, prefName: string, checked: boolean) => {
-      setSelectedCodes((prev) => {
-        const next = new Set(prev)
-        if (checked) {
-          next.add(prefCode)
-          addPrefecture(prefCode, prefName)
-        } else {
+      if (checked) {
+        setSelectedCodes((prev) => new Set(prev).add(prefCode))
+        addPrefecture(prefCode, prefName)
+      } else {
+        setSelectedCodes((prev) => {
+          const next = new Set(prev)
           next.delete(prefCode)
-          removePrefecture(prefCode)
-        }
-        return next
-      })
+          return next
+        })
+        removePrefecture(prefCode)
+      }
     },
     [addPrefecture, removePrefecture]
   )
@@ -32,19 +40,36 @@ export const PrefectureSelector = () => {
       {error && <p className={styles.error}>エラー: {error}</p>}
       {!loading && !error && (
         <div className={styles.grid}>
-          {prefectures.map((pref) => (
-            <label key={pref.prefCode} className={styles.label}>
-              <input
-                type="checkbox"
-                name="prefecture"
-                checked={selectedCodes.has(pref.prefCode)}
-                onChange={(e) =>
-                  handleChange(pref.prefCode, pref.prefName, e.target.checked)
-                }
-              />
-              {pref.prefName}
-            </label>
-          ))}
+          {prefectures.map((pref) => {
+            const styleIndex = styleIndexMap.get(pref.prefCode)
+            const style =
+              styleIndex !== undefined ? getSeriesStyle(styleIndex) : undefined
+            return (
+              <label key={pref.prefCode} className={styles.label}>
+                <input
+                  type="checkbox"
+                  name="prefecture"
+                  checked={selectedCodes.has(pref.prefCode)}
+                  onChange={(e) =>
+                    handleChange(pref.prefCode, pref.prefName, e.target.checked)
+                  }
+                />
+                {pref.prefName}
+                {style && (
+                  <span
+                    className={styles.legendIcon}
+                    style={{ color: style.color }}
+                  >
+                    <span className={styles.legendLine} />
+                    <span
+                      className={styles.marker}
+                      data-symbol={style.symbol}
+                    />
+                  </span>
+                )}
+              </label>
+            )
+          })}
         </div>
       )}
     </div>

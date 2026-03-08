@@ -6,12 +6,14 @@ import type { PopulationComposition } from '../types'
 export interface PrefPopulation {
   prefCode: number
   prefName: string
+  styleIndex: number
   data: PopulationComposition[]
 }
 
 export const usePopulation = () => {
   const [populations, setPopulations] = useState<PrefPopulation[]>([])
   const cache = useRef<Map<number, PopulationComposition[]>>(new Map())
+  const styleCounter = useRef(0)
 
   const addPrefecture = useCallback(
     async (prefCode: number, prefName: string) => {
@@ -20,7 +22,11 @@ export const usePopulation = () => {
         data = await fetchPopulation(prefCode)
         cache.current.set(prefCode, data)
       }
-      setPopulations((prev) => [...prev, { prefCode, prefName, data }])
+      const styleIndex = styleCounter.current++
+      setPopulations((prev) => {
+        if (prev.some((p) => p.prefCode === prefCode)) return prev
+        return [...prev, { prefCode, prefName, styleIndex, data }]
+      })
     },
     []
   )
