@@ -1,11 +1,45 @@
 .header {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
   padding: 1rem;
   border-bottom: 1px solid var(--color-border);
 
   h1 {
+    flex: 1;
     margin: 0;
     font-size: clamp(1rem, 6vw, 2rem);
     text-align: center;
     white-space: nowrap;
+  }
+}
+
+.menuButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 0.25rem;
+}
+
+.menuButton:hover {
+  background-color: rgb(0 0 0 / 5%);
+}
+
+.spacer {
+  width: 2.5rem;
+}
+
+@media (width >= 768px) {
+  .menuButton,
+  .spacer {
+    display: none;
   }
 }

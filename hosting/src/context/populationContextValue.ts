@@ -8,7 +8,6 @@ export interface PopulationContextValue {
   populationType: PopulationType
   addPrefecture: (prefCode: number, prefName: string) => Promise<void>
   removePrefecture: (prefCode: number) => void
-  setPopulationType: (type: PopulationType) => void
 }
 
 export const PopulationContext = createContext<PopulationContextValue | null>(
