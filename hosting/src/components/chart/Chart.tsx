@@ -45,9 +45,9 @@ export const Chart = () => {
 
   const options: Highcharts.Options = useMemo(
     () => ({
-      chart: { marginTop: 35, marginBottom: 45 },
+      chart: { margin: [35, 30, 45, 70] },
       title: { text: undefined },
-      xAxis: { title: { text: '年', align: 'high', y: -20 }, type: 'linear' },
+      xAxis: { title: { text: '年', align: 'high', x: 20, y: -20 }, type: 'linear' },
       yAxis: {
         title: {
           text: '人口数',
