@@ -5,6 +5,7 @@ import { PrefectureSelector } from './PrefectureSelector'
 
 const mockAddPrefecture = vi.fn()
 const mockRemovePrefecture = vi.fn()
+let mockSelectedCodes = new Set<number>()
 
 vi.mock('../../hooks/usePrefectures', () => ({
   usePrefectures: vi.fn(),
@@ -13,6 +14,11 @@ vi.mock('../../hooks/usePrefectures', () => ({
 vi.mock('../../hooks/usePopulationContext', () => ({
   usePopulationContext: () => ({
     populations: [],
+    get selectedCodes() {
+      return mockSelectedCodes
+    },
+    loadingCodes: new Set<number>(),
+    error: null,
     addPrefecture: mockAddPrefecture,
     removePrefecture: mockRemovePrefecture,
   }),
@@ -27,6 +33,7 @@ const mockPrefectures = [
 describe('PrefectureSelector', () => {
   afterEach(() => {
     vi.clearAllMocks()
+    mockSelectedCodes = new Set()
   })
 
   it('全都道府県がチェックボックスとして表示される', () => {
@@ -55,6 +62,8 @@ describe('PrefectureSelector', () => {
   })
 
   it('チェック済みを外すと removePrefecture が呼ばれる', () => {
+    mockSelectedCodes = new Set([13])
+
     vi.mocked(usePrefectures).mockReturnValue({
       prefectures: mockPrefectures,
       loading: false,
@@ -62,7 +71,6 @@ describe('PrefectureSelector', () => {
     })
 
     render(<PrefectureSelector />)
-    fireEvent.click(screen.getByLabelText('東京都'))
     fireEvent.click(screen.getByLabelText('東京都'))
     expect(mockRemovePrefecture).toHaveBeenCalledWith(13)
   })

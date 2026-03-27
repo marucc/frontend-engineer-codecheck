@@ -27,6 +27,9 @@ describe('Chart', () => {
     vi.mocked(usePopulationContext).mockReturnValue({
       populations: [],
       populationType: '総人口',
+      selectedCodes: new Set<number>(),
+      loadingCodes: new Set<number>(),
+      error: null,
       addPrefecture: vi.fn(),
       removePrefecture: vi.fn(),
     })
@@ -54,6 +57,9 @@ describe('Chart', () => {
         },
       ],
       populationType: '総人口',
+      selectedCodes: new Set<number>(),
+      loadingCodes: new Set<number>(),
+      error: null,
       addPrefecture: vi.fn(),
       removePrefecture: vi.fn(),
     })
