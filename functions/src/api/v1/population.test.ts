@@ -24,7 +24,19 @@ describe('population-composition', () => {
   })
 
   it('正常', async () => {
-    const mockData = { result: { prefCode: 1 } }
+    const mockData = {
+      result: {
+        data: [
+          {
+            label: '総人口',
+            data: [
+              { year: 1960, value: 5039206 },
+              { year: 1965, value: 5171800 },
+            ],
+          },
+        ],
+      },
+    }
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ok: true,
       json: async () => mockData,
