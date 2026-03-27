@@ -51,26 +51,26 @@ export const PrefectureSelector = () => {
               >
                 <input
                   type="checkbox"
-                  className={styles.srOnly}
+                  className={styles.checkbox}
                   name="prefecture"
                   checked={selectedCodes.has(pref.prefCode)}
                   onChange={(e) =>
                     handleChange(pref.prefCode, pref.prefName, e.target.checked)
                   }
                 />
-                <span
-                  className={styles.legendIcon}
-                  style={{ color: style?.color ?? '#ccc' }}
-                >
-                  <span className={styles.legendLine} />
-                  {style && (
+                {pref.prefName}
+                {style && (
+                  <span
+                    className={styles.legendIcon}
+                    style={{ color: style.color }}
+                  >
+                    <span className={styles.legendLine} />
                     <span
                       className={styles.marker}
                       data-symbol={style.symbol}
                     />
-                  )}
-                </span>
-                {pref.prefName}
+                  </span>
+                )}
               </label>
             )
           })}
