@@ -13,6 +13,7 @@
   },
   "main": "dist/index.js",
   "dependencies": {
+    "@fec/shared": "workspace:*",
     "express": "^4.22.1",
     "firebase-admin": "^13.7.0",
     "firebase-functions": "^7.1.0"
