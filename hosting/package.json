@@ -12,6 +12,7 @@
     "lint:fix": "eslint . --fix && stylelint \"src/**/*.css\" --fix && prettier --write \"**/*.{ts,tsx,css}\""
   },
   "dependencies": {
+    "@fec/shared": "workspace:*",
     "highcharts": "^12.5.0",
     "highcharts-react-official": "^3.2.3",
     "modern-normalize": "^3.0.1",

@@ -1,3 +1,4 @@
+import { prefecturesResponseSchema } from '@fec/shared'
 import type { Request, Response } from 'express'
 import { defineSecret } from 'firebase-functions/params'
 
@@ -16,7 +17,8 @@ export default async (req: Request, res: Response) => {
       res.status(status).send({ error: { message: statusText, status } })
       return
     }
-    const data = await response.json()
+    const json: unknown = await response.json()
+    const data = prefecturesResponseSchema.parse(json)
     res.json(data)
   } catch (error) {
     console.error('Error fetching data from API:', error)
