@@ -1,7 +1,7 @@
 {
   "name": "@fec/functions",
   "scripts": {
-    "build": "vite build",
+    "build": "rm -rf dist && pnpm --filter @fec/functions --prod deploy dist && vite build",
     "build:watch": "vite build --watch",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -12,6 +12,9 @@
     "node": "22"
   },
   "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "express": "^4.22.1",
     "firebase-admin": "^13.7.0",
