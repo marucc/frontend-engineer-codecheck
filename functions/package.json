@@ -1,7 +1,7 @@
 {
   "name": "@fec/functions",
   "scripts": {
-    "build": "rm -rf dist && pnpm --filter @fec/functions --prod deploy dist && vite build",
+    "build": "vite build",
     "build:watch": "vite build --watch",
     "test": "vitest run",
     "test:watch": "vitest",
