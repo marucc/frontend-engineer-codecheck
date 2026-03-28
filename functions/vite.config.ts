@@ -10,22 +10,23 @@ function deployPackagePlugin(): Plugin {
     closeBundle() {
       const distDir = join(__dirname, 'dist')
 
-      // Clean up package.json for Firebase Cloud Build
+      // Build deploy package.json with only required fields
       const pkgPath = join(distDir, 'package.json')
-      const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'))
-      delete pkg.devDependencies
-      delete pkg.optionalDependencies
-      delete pkg.scripts
-      delete pkg.files
-      if (pkg.pnpm && Object.keys(pkg.pnpm).length === 0) delete pkg.pnpm
-      pkg.main = 'index.js'
-      // Remove pnpm peer dep suffixes from dependency versions
+      const src = JSON.parse(readFileSync(pkgPath, 'utf-8'))
+      const deps: Record<string, string> = {}
       for (const [key, value] of Object.entries(
-        pkg.dependencies as Record<string, string>
+        src.dependencies as Record<string, string>
       )) {
-        pkg.dependencies[key] = value.replace(/\(.+\)$/, '')
+        deps[key] = value.replace(/\(.+\)$/, '')
       }
-      writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
+      const deployPkg = {
+        name: src.name,
+        engines: src.engines,
+        main: 'index.js',
+        dependencies: deps,
+        private: true,
+      }
+      writeFileSync(pkgPath, JSON.stringify(deployPkg, null, 2) + '\n')
 
       // Copy .secret.local for emulator
       const secretSrc = join(__dirname, '.secret.local')
