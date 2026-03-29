@@ -73,6 +73,10 @@ function deployPackagePlugin(): Plugin {
       )
 
       // Regenerate lockfile to match cleaned package.json
+      writeFileSync(
+        join(distDir, 'pnpm-workspace.yaml'),
+        'injectWorkspacePackages: true\n'
+      )
       execSync(
         'pnpm install --lockfile-only --no-frozen-lockfile --ignore-workspace',
         { cwd: distDir, stdio: 'inherit' }
