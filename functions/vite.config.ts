@@ -1,7 +1,7 @@
 import { execSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { resolve } from 'node:path'
 
 import { defineConfig } from 'vite'
 import type { Plugin } from 'vite'
@@ -9,7 +9,7 @@ import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 function computeDeployHash(pkgPath: string, rootDir: string): string {
   const pkgContent = readFileSync(pkgPath, 'utf-8')
-  const lockContent = readFileSync(join(rootDir, 'pnpm-lock.yaml'), 'utf-8')
+  const lockContent = readFileSync(resolve(rootDir, 'pnpm-lock.yaml'), 'utf-8')
   return createHash('sha256')
     .update(pkgContent)
     .update(lockContent)
@@ -18,17 +18,17 @@ function computeDeployHash(pkgPath: string, rootDir: string): string {
 }
 
 function needsDeploy(distDir: string, currentHash: string): boolean {
-  if (!existsSync(join(distDir, 'node_modules'))) return true
-  const distPkgPath = join(distDir, 'package.json')
+  if (!existsSync(resolve(distDir, 'node_modules'))) return true
+  const distPkgPath = resolve(distDir, 'package.json')
   if (!existsSync(distPkgPath)) return true
   const distPkg = JSON.parse(readFileSync(distPkgPath, 'utf-8'))
   return distPkg._deployHash !== currentHash
 }
 
 function deployPackagePlugin(): Plugin {
-  const pkgPath = join(__dirname, 'package.json')
-  const distDir = join(__dirname, 'dist')
-  const rootDir = join(__dirname, '..')
+  const pkgPath = resolve(__dirname, 'package.json')
+  const distDir = resolve(__dirname, 'dist')
+  const rootDir = resolve(__dirname, '..')
 
   return {
     name: 'deploy-package',
@@ -48,7 +48,7 @@ function deployPackagePlugin(): Plugin {
       })
 
       // Clean dist/package.json for Firebase Cloud Build
-      const deployPkgPath = join(distDir, 'package.json')
+      const deployPkgPath = resolve(distDir, 'package.json')
       const src = JSON.parse(readFileSync(deployPkgPath, 'utf-8'))
       const deps: Record<string, string> = {}
       for (const [key, value] of Object.entries(
@@ -56,25 +56,21 @@ function deployPackagePlugin(): Plugin {
       )) {
         deps[key] = value.replace(/\(.+\)$/, '')
       }
-      writeFileSync(
-        deployPkgPath,
-        JSON.stringify(
-          {
-            name: src.name,
-            engines: src.engines,
-            main: 'index.js',
-            dependencies: deps,
-            private: true,
-            _deployHash: hash,
-          },
-          null,
-          2
-        ) + '\n'
-      )
+      const cleanPkg: Record<string, unknown> = {
+        name: src.name,
+        private: true,
+        ...(src.type && { type: src.type }),
+        main: (src.main as string).replace(/^dist\//, ''),
+        engines: src.engines,
+        dependencies: deps,
+        ...(src.packageManager && { packageManager: src.packageManager }),
+        _deployHash: hash,
+      }
+      writeFileSync(deployPkgPath, JSON.stringify(cleanPkg, null, 2) + '\n')
 
       // Regenerate lockfile to match cleaned package.json
       writeFileSync(
-        join(distDir, 'pnpm-workspace.yaml'),
+        resolve(distDir, 'pnpm-workspace.yaml'),
         'injectWorkspacePackages: true\n'
       )
       execSync(
