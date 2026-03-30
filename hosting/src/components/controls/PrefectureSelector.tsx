@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { usePopulationContext } from '../../hooks/usePopulationContext'
 import { usePrefectures } from '../../hooks/usePrefectures'
@@ -11,8 +11,7 @@ export const PrefectureSelector = () => {
     selectedCodes,
     loadingCodes,
     error: populationError,
-    addPrefecture,
-    removePrefecture,
+    togglePrefecture,
   } = usePopulationContext()
   const { prefectures, loading, error: prefecturesError } = usePrefectures()
 
@@ -21,17 +20,6 @@ export const PrefectureSelector = () => {
     populations.forEach((p) => map.set(p.prefCode, p.styleIndex))
     return map
   }, [populations])
-
-  const handleChange = useCallback(
-    (prefCode: number, prefName: string, checked: boolean) => {
-      if (checked) {
-        addPrefecture(prefCode, prefName)
-      } else {
-        removePrefecture(prefCode)
-      }
-    },
-    [addPrefecture, removePrefecture]
-  )
 
   return (
     <div className={styles.container}>
@@ -58,13 +46,12 @@ export const PrefectureSelector = () => {
                   className={styles.checkbox}
                   name="prefecture"
                   checked={isSelected}
-                  disabled={isLoading}
-                  onChange={(e) =>
-                    handleChange(pref.prefCode, pref.prefName, e.target.checked)
+                  onChange={() =>
+                    togglePrefecture(pref.prefCode, pref.prefName)
                   }
                 />
                 {pref.prefName}
-                {isLoading && (
+                {isLoading && isSelected && (
                   <span className={styles.spinner} aria-label="読み込み中" />
                 )}
                 {style && (

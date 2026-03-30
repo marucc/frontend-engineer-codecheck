@@ -13,14 +13,8 @@ export const PopulationProvider = ({
   children,
   initialType,
 }: PopulationProviderProps) => {
-  const {
-    populations,
-    selectedCodes,
-    loadingCodes,
-    error,
-    addPrefecture,
-    removePrefecture,
-  } = usePopulation()
+  const { populations, selectedCodes, loadingCodes, error, togglePrefecture } =
+    usePopulation()
 
   return (
     <PopulationContext.Provider
@@ -30,8 +24,7 @@ export const PopulationProvider = ({
         selectedCodes,
         loadingCodes,
         error,
-        addPrefecture,
-        removePrefecture,
+        togglePrefecture,
       }}
     >
       {children}
