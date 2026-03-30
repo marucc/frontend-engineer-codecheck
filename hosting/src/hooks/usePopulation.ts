@@ -20,10 +20,35 @@ export const usePopulation = () => {
   const cache = useRef<Map<number, PopulationComposition[]>>(new Map())
   const styleCounter = useRef(0)
   const fetchingRef = useRef<Set<number>>(new Set())
+  const cancelledRef = useRef<Set<number>>(new Set())
+  const selectedRef = useRef<Set<number>>(new Set())
 
-  const addPrefecture = useCallback(
+  const togglePrefecture = useCallback(
     async (prefCode: number, prefName: string) => {
-      if (fetchingRef.current.has(prefCode)) return
+      if (selectedRef.current.has(prefCode)) {
+        // OFF
+        selectedRef.current.delete(prefCode)
+        cancelledRef.current.add(prefCode)
+        setSelectedCodes((prev) => {
+          const next = new Set(prev)
+          next.delete(prefCode)
+          return next
+        })
+        setPopulations((prev) => prev.filter((p) => p.prefCode !== prefCode))
+        return
+      }
+
+      // ON
+      if (fetchingRef.current.has(prefCode)) {
+        // Re-check during fetch: cancel the cancellation
+        selectedRef.current.add(prefCode)
+        cancelledRef.current.delete(prefCode)
+        setSelectedCodes((prev) => new Set(prev).add(prefCode))
+        return
+      }
+
+      selectedRef.current.add(prefCode)
+      fetchingRef.current.add(prefCode)
       setError(null)
       setSelectedCodes((prev) => new Set(prev).add(prefCode))
 
@@ -34,10 +59,10 @@ export const usePopulation = () => {
           if (prev.some((p) => p.prefCode === prefCode)) return prev
           return [...prev, { prefCode, prefName, styleIndex, data: cached }]
         })
+        fetchingRef.current.delete(prefCode)
         return
       }
 
-      fetchingRef.current.add(prefCode)
       const timer = setTimeout(() => {
         if (fetchingRef.current.has(prefCode)) {
           setLoadingCodes((prev) => new Set(prev).add(prefCode))
@@ -48,13 +73,14 @@ export const usePopulation = () => {
         const fetched = await fetchPopulation(prefCode)
         cache.current.set(prefCode, fetched)
 
-        if (!fetchingRef.current.has(prefCode)) return
+        if (cancelledRef.current.has(prefCode)) return
         const styleIndex = styleCounter.current++
         setPopulations((prev) => {
           if (prev.some((p) => p.prefCode === prefCode)) return prev
           return [...prev, { prefCode, prefName, styleIndex, data: fetched }]
         })
       } catch {
+        selectedRef.current.delete(prefCode)
         setSelectedCodes((prev) => {
           const next = new Set(prev)
           next.delete(prefCode)
@@ -64,6 +90,7 @@ export const usePopulation = () => {
       } finally {
         clearTimeout(timer)
         fetchingRef.current.delete(prefCode)
+        cancelledRef.current.delete(prefCode)
         setLoadingCodes((prev) => {
           const next = new Set(prev)
           next.delete(prefCode)
@@ -74,22 +101,11 @@ export const usePopulation = () => {
     []
   )
 
-  const removePrefecture = useCallback((prefCode: number) => {
-    fetchingRef.current.delete(prefCode)
-    setSelectedCodes((prev) => {
-      const next = new Set(prev)
-      next.delete(prefCode)
-      return next
-    })
-    setPopulations((prev) => prev.filter((p) => p.prefCode !== prefCode))
-  }, [])
-
   return {
     populations,
     selectedCodes,
     loadingCodes,
     error,
-    addPrefecture,
-    removePrefecture,
+    togglePrefecture,
   }
 }

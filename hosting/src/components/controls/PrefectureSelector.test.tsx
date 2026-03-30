@@ -3,8 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { usePrefectures } from '../../hooks/usePrefectures'
 import { PrefectureSelector } from './PrefectureSelector'
 
-const mockAddPrefecture = vi.fn()
-const mockRemovePrefecture = vi.fn()
+const mockTogglePrefecture = vi.fn()
 let mockSelectedCodes = new Set<number>()
 
 vi.mock('../../hooks/usePrefectures', () => ({
@@ -19,8 +18,7 @@ vi.mock('../../hooks/usePopulationContext', () => ({
     },
     loadingCodes: new Set<number>(),
     error: null,
-    addPrefecture: mockAddPrefecture,
-    removePrefecture: mockRemovePrefecture,
+    togglePrefecture: mockTogglePrefecture,
   }),
 }))
 
@@ -49,7 +47,7 @@ describe('PrefectureSelector', () => {
     expect(screen.getByLabelText('大阪府')).toBeInTheDocument()
   })
 
-  it('チェックボックスをクリックすると addPrefecture が呼ばれる', () => {
+  it('チェックボックスをクリックすると togglePrefecture が呼ばれる', () => {
     vi.mocked(usePrefectures).mockReturnValue({
       prefectures: mockPrefectures,
       loading: false,
@@ -58,10 +56,10 @@ describe('PrefectureSelector', () => {
 
     render(<PrefectureSelector />)
     fireEvent.click(screen.getByLabelText('東京都'))
-    expect(mockAddPrefecture).toHaveBeenCalledWith(13, '東京都')
+    expect(mockTogglePrefecture).toHaveBeenCalledWith(13, '東京都')
   })
 
-  it('チェック済みを外すと removePrefecture が呼ばれる', () => {
+  it('チェック済みを外すと togglePrefecture が呼ばれる', () => {
     mockSelectedCodes = new Set([13])
 
     vi.mocked(usePrefectures).mockReturnValue({
@@ -72,7 +70,7 @@ describe('PrefectureSelector', () => {
 
     render(<PrefectureSelector />)
     fireEvent.click(screen.getByLabelText('東京都'))
-    expect(mockRemovePrefecture).toHaveBeenCalledWith(13)
+    expect(mockTogglePrefecture).toHaveBeenCalledWith(13, '東京都')
   })
 
   it('loading 中は読み込み中と表示される', () => {

@@ -9,8 +9,7 @@ export interface PopulationContextValue {
   selectedCodes: Set<number>
   loadingCodes: Set<number>
   error: string | null
-  addPrefecture: (prefCode: number, prefName: string) => Promise<void>
-  removePrefecture: (prefCode: number) => void
+  togglePrefecture: (prefCode: number, prefName: string) => Promise<void>
 }
 
 export const PopulationContext = createContext<PopulationContextValue | null>(
