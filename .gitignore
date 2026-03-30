@@ -2,6 +2,8 @@
 .DS_Store
 ._*
 
+tmp/
+
 # Node
 .pnpm-store
 node_modules/

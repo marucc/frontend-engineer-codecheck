@@ -12,9 +12,7 @@
     "node": "22"
   },
   "main": "dist/index.js",
-  "files": [
-    "dist"
-  ],
+  "files": [],
   "dependencies": {
     "@google-cloud/functions-framework": "^5.0.2",
     "express": "^4.22.1",
