@@ -30,8 +30,7 @@ describe('Chart', () => {
       selectedCodes: new Set<number>(),
       loadingCodes: new Set<number>(),
       error: null,
-      addPrefecture: vi.fn(),
-      removePrefecture: vi.fn(),
+      togglePrefecture: vi.fn(),
     })
 
     render(<Chart />)
@@ -60,8 +59,7 @@ describe('Chart', () => {
       selectedCodes: new Set<number>(),
       loadingCodes: new Set<number>(),
       error: null,
-      addPrefecture: vi.fn(),
-      removePrefecture: vi.fn(),
+      togglePrefecture: vi.fn(),
     })
 
     render(<Chart />)

@@ -26,14 +26,14 @@ describe('usePopulation', () => {
     const { result } = renderHook(() => usePopulation())
 
     await act(async () => {
-      await result.current.addPrefecture(1, '北海道')
+      await result.current.togglePrefecture(1, '北海道')
     })
 
     expect(result.current.populations).toHaveLength(1)
     expect(result.current.populations[0].prefName).toBe('北海道')
 
     act(() => {
-      result.current.removePrefecture(1)
+      result.current.togglePrefecture(1, '北海道')
     })
 
     expect(result.current.populations).toHaveLength(0)
@@ -48,7 +48,7 @@ describe('usePopulation', () => {
     const { result } = renderHook(() => usePopulation())
 
     await act(async () => {
-      await result.current.addPrefecture(1, '北海道')
+      await result.current.togglePrefecture(1, '北海道')
     })
 
     expect(result.current.populations[0].styleIndex).toBeDefined()
@@ -64,13 +64,13 @@ describe('usePopulation', () => {
     const { result } = renderHook(() => usePopulation())
 
     await act(async () => {
-      await result.current.addPrefecture(1, '北海道')
+      await result.current.togglePrefecture(1, '北海道')
     })
     await act(async () => {
-      await result.current.addPrefecture(13, '東京都')
+      await result.current.togglePrefecture(13, '東京都')
     })
     await act(async () => {
-      await result.current.addPrefecture(27, '大阪府')
+      await result.current.togglePrefecture(27, '大阪府')
     })
 
     const indices = result.current.populations.map((p) => p.styleIndex)
@@ -87,15 +87,15 @@ describe('usePopulation', () => {
     const { result } = renderHook(() => usePopulation())
 
     await act(async () => {
-      await result.current.addPrefecture(1, '北海道')
+      await result.current.togglePrefecture(1, '北海道')
     })
 
     act(() => {
-      result.current.removePrefecture(1)
+      result.current.togglePrefecture(1, '北海道') // OFF
     })
 
     await act(async () => {
-      await result.current.addPrefecture(1, '北海道')
+      await result.current.togglePrefecture(1, '北海道') // ON again
     })
 
     expect(fetchSpy).toHaveBeenCalledTimes(1)

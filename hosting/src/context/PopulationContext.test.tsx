@@ -50,14 +50,14 @@ describe('PopulationContext', () => {
     const { result } = renderHook(() => usePopulationContext(), { wrapper })
 
     await act(async () => {
-      await result.current.addPrefecture(1, '北海道')
+      await result.current.togglePrefecture(1, '北海道')
     })
 
     expect(result.current.populations).toHaveLength(1)
     expect(result.current.populations[0].prefName).toBe('北海道')
 
     act(() => {
-      result.current.removePrefecture(1)
+      result.current.togglePrefecture(1, '北海道')
     })
 
     expect(result.current.populations).toHaveLength(0)
