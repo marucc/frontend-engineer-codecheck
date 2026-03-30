@@ -95,45 +95,66 @@ resource "google_service_account" "github_actions" {
   project      = var.project_id
 }
 
-resource "google_project_iam_member" "github_actions_hosting_admin" {
-  project = var.project_id
-  role    = "roles/firebasehosting.admin"
-  member  = "serviceAccount:${google_service_account.github_actions.email}"
+# GitHub Actions デプロイ用カスタムロール
+resource "google_project_iam_custom_role" "github_actions_deploy" {
+  project     = var.project_id
+  role_id     = "githubActionsDeploy"
+  title       = "GitHub Actions Deploy Role"
+  description = "Firebase Hosting + Functions デプロイに必要な最小権限"
+  permissions = [
+    # IAM
+    "iam.serviceAccounts.actAs",
+    "resourcemanager.projects.get",
+    "serviceusage.services.get",
+    "serviceusage.services.use",
+
+    # Firebase
+    "firebase.projects.get",
+
+    # Firebase Hosting
+    "firebasehosting.sites.update",
+    "firebasehosting.sites.get",
+
+    # Cloud Functions
+    "cloudfunctions.functions.create",
+    "cloudfunctions.functions.delete",
+    "cloudfunctions.functions.get",
+    "cloudfunctions.functions.list",
+    "cloudfunctions.functions.setIamPolicy",
+    "cloudfunctions.functions.sourceCodeSet",
+    "cloudfunctions.functions.update",
+    "cloudfunctions.operations.get",
+
+    # Cloud Run (2nd Gen)
+    "run.services.create",
+    "run.services.get",
+    "run.services.getIamPolicy",
+    "run.services.setIamPolicy",
+    "run.services.update",
+
+    # Cloud Build
+    "cloudbuild.builds.create",
+    "cloudbuild.builds.get",
+    "cloudbuild.builds.list",
+
+    # Artifact Registry
+    "artifactregistry.packages.get",
+    "artifactregistry.packages.delete",
+    "artifactregistry.repositories.downloadArtifacts",
+    "artifactregistry.repositories.get",
+    "artifactregistry.repositories.uploadArtifacts",
+
+    # Secret Manager
+    "secretmanager.secrets.get",
+    "secretmanager.secrets.getIamPolicy",
+    "secretmanager.secrets.setIamPolicy",
+    "secretmanager.versions.get",
+  ]
 }
 
-resource "google_project_iam_member" "github_actions_cloudfunctions_developer" {
+resource "google_project_iam_member" "github_actions_deploy" {
   project = var.project_id
-  role    = "roles/cloudfunctions.developer"
-  member  = "serviceAccount:${google_service_account.github_actions.email}"
-}
-
-resource "google_project_iam_member" "github_actions_run_developer" {
-  project = var.project_id
-  role    = "roles/run.developer"
-  member  = "serviceAccount:${google_service_account.github_actions.email}"
-}
-
-resource "google_project_iam_member" "github_actions_artifactregistry_writer" {
-  project = var.project_id
-  role    = "roles/artifactregistry.writer"
-  member  = "serviceAccount:${google_service_account.github_actions.email}"
-}
-
-resource "google_project_iam_member" "github_actions_service_account_user" {
-  project = var.project_id
-  role    = "roles/iam.serviceAccountUser"
-  member  = "serviceAccount:${google_service_account.github_actions.email}"
-}
-
-resource "google_project_iam_member" "github_actions_service_usage_consumer" {
-  project = var.project_id
-  role    = "roles/serviceusage.serviceUsageConsumer"
-  member  = "serviceAccount:${google_service_account.github_actions.email}"
-}
-
-resource "google_project_iam_member" "github_actions_secret_viewer" {
-  project = var.project_id
-  role    = "roles/secretmanager.viewer"
+  role    = google_project_iam_custom_role.github_actions_deploy.id
   member  = "serviceAccount:${google_service_account.github_actions.email}"
 }
 
